@@ -204,7 +204,8 @@ def inference(input_tensor, train, regularizer):
         # 
         if regularizer != None:
             tf.add_to_collection(name="losses", value = regularizer(fc2_weights))
-        logits = tf.matmul(fc1, fc2_weights) + fc2_biases
+        logits = tf.matmul(fc1, fc2_weights) + fc2_biases # use default name: layer12_fc2/add
+        # logits = tf.add(tf.matmul(fc1, fc2_weights), fc2_biases, name = "output") # to specify output node name
     # 返回最后的输出
     return logits
 

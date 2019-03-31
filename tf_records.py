@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
-# python 2.7
+# author: liaoming
+# python version: python2.7, python3.6 is ok, please note the print function.
 
 import tensorflow as tf 
 import numpy as np 
@@ -156,6 +157,10 @@ def get_batch(image, label, batch_size, capacity, min_after_dequeue):
         min_after_dequeue = min_after_dequeue)
     return images, tf.reshape(labels, [batch_size])
 
+def transform_img(bgr):
+    # you need to define your own transform function.
+    pass 
+
 # read TFRecords use new methds(tf.data module)
 def read_tfrecords_by_data(tfr_path, size, channel, transform = None,
     label_type = "classify", batch_size = 1, drop_remainder = False,
@@ -191,7 +196,7 @@ def read_tfrecords_by_data(tfr_path, size, channel, transform = None,
         height, width = size
         image = tf.reshape(image, [height, width, channel])
         if None != transform:
-            image = transform(image)
+            image = transform(image)                     # transform image, usually do some data augumentation.
         if "classify" == label_type:
             label = tf.cast(features["label"], tf.int64)
         elif "segmentation" == label_type:

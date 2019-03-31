@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*- 
+# author: liaoming
+# python version: python2.7 and python3.6 is ok, please note the print function.
 import tensorflow as tf 
 import os 
 import argparse 
@@ -7,9 +9,12 @@ from tensorflow.python.framework import graph_util
 def ckpt2pb(ckpt_dir, pb_dir, save_name, output_nodes, sep = ","):
     """
     params: \n
-        ckpt_dir: The directory where stores the ckpt models.
-        pb_dir: The directory where to store the converted pb model.
-    return: None, but it will write the pb model to disk.
+        ckpt_dir: The directory where stores the ckpt models. 
+        pb_dir: The directory where to store the converted pb model. 
+        save_name: the name used by the pb file. 
+        output_nodes: the output nodes of the ckpt model. 
+        sep: the seperator of the output_nodes string. 
+    return: None, but it will write the pb model to disk. 
     """
     if not tf.gfile.Exists(pb_dir):
         tf.gfile.MakeDirs(pb_dir)
@@ -39,13 +44,13 @@ def ckpt2pb(ckpt_dir, pb_dir, save_name, output_nodes, sep = ","):
         
 def main():
     argparser = argparse.ArgumentParser()
-    # define an input argument
+    # define input arguments
     argparser.add_argument("ckpt_dir", type = str, help = "The directory where stores the ckpt model")
     argparser.add_argument("pb_dir", type = str, help = "The directory will to store the pb model")
     argparser.add_argument("save_name", type = str, help = "The save name of generated pb model")
-    argparser.add_argument("output_nodes", type = str, help = "The output nodes defined int the ckpt model, split by ','")
+    argparser.add_argument("output_nodes", type = str, help = "The output nodes defined int the ckpt model, split by ${sep}")
     argparser.add_argument("sep", type = str, nargs = "?", default = ',', help = "The seprator of output_nodes")
-    # get args
+    # get input arguments
     args = argparser.parse_args()
     ckpt2pb(args.ckpt_dir, args.pb_dir, args.save_name, args.output_nodes, args.sep)
 
