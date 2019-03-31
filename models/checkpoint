@@ -1,0 +1,6 @@
+model_checkpoint_path: "LeNet_5_c17_flowers.ckpt-8000"
+all_model_checkpoint_paths: "LeNet_5_c17_flowers.ckpt-4000"
+all_model_checkpoint_paths: "LeNet_5_c17_flowers.ckpt-5000"
+all_model_checkpoint_paths: "LeNet_5_c17_flowers.ckpt-6000"
+all_model_checkpoint_paths: "LeNet_5_c17_flowers.ckpt-7000"
+all_model_checkpoint_paths: "LeNet_5_c17_flowers.ckpt-8000"
