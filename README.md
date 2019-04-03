@@ -2,7 +2,7 @@
 
 This repo is use 17flwers dataset to do classification for learning tensorflow, learning how to create TFRecords and how to train own data in tensorflow.
 
-## Create TFRcords
+## Create TFRecords
 
 ## Define Network
 
