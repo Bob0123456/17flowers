@@ -22,31 +22,55 @@ def _bytes_feature(value):
     return tf.train.Feature(
         bytes_list = tf.train.BytesList(value = [value]))
 
-def get_image_label_lst_classify(root_dir, cls_dict, out_path, shuffle = False, exts = ".png.jpg.jpeg.bmp", sep = " "):
+def get_image_label_lst_classify(root_dir, cls_dict, out_path,
+    eval_ratio = 0.0, shuffle = False, exts = ".png.jpg.jpeg.bmp", sep = " "):
     """
     params:\n
         root_dir: root folder of images. eg: root_dir = "/images/". 
         cls_dict: each class' folder and its specified label. eg: cls_dict = {"bird": 0, "dog": 1}. 
+        out_path: the output path of generated train.txt and eval.txt, eg: "./17flowers", then generate "./17flowers_train.txt" and "./17flowers_eval.txt"
+        eval_ratio: the percentage of evaluation part of whole datasets. Default = 0.
+        shuffle: whether shuffle the train and eval list.
+        exts: the acceptable extensions of image file.
+        sep: the seprator of image label pair, default is ' '
     return: None, write image label pare to ${out_path}. 
     """
     assert os.path.exists(root_dir), "the specified directory:'{}' is not exist, please check it again.".format(root_dir)
-    with open(out_path, "w") as f:
-        img_label_pares = []
-        for sub_dir in cls_dict.keys():
-            path = os.path.join(root_dir, sub_dir)
-            lst = os.listdir(path)
-            for each in lst:
-                if each.split(".")[-1] in exts:
-                    img_path = os.path.join(path, each)
-                    label = cls_dict[sub_dir]
-                    img_label_pares.append("{}{}{}\n".format(img_path, sep, label))
-        if shuffle:
-            random.shuffle(img_label_pares)
-        for idx, each in enumerate(img_label_pares):
-            if 0 == idx % 100:
-                print ("processed %6d images." % (idx))
+    assert eval_ratio >= 0.0 and eval_ratio <= 1.0, "the eval_ratio must within [0.0, 1.0], but {} got.".format(eval_ratio)
+    trains = []
+    evals = []
+    for sub_dir in cls_dict.keys():
+        img_label_pairs = []
+        path = os.path.join(root_dir, sub_dir)
+        lst = os.listdir(path)
+        for each in lst:
+            if each.split(".")[-1] in exts:
+                img_path = os.path.join(path, each)
+                label = cls_dict[sub_dir]
+                img_label_pairs.append("{}{}{}\n".format(img_path, sep, label))
+        num = int(len(lst) * eval_ratio)
+        random.shuffle(img_label_pairs)
+        trains += img_label_pairs[num :]
+        evals += img_label_pairs[0 : num]
+    if shuffle:
+        random.shuffle(trains)
+        random.shuffle(evals)
+    # write trains
+    with open(out_path + "_train.txt", "w") as f:
+        print("processing train dataset...")
+        num = len(trains)
+        for idx, each in enumerate(trains):
+            f.write(each) 
+            percent = idx * 100 / num 
+            print("{:3d}%\r".format(percent)) 
+    # write evals
+    with open(out_path + "_eval.txt", "w") as f:
+        print("processing eval dataset...")
+        num = len(evals)
+        for idx, each in enumerate(evals):
             f.write(each)
-            
+            percent = idx * 100 / num 
+            print("{:3d}%\r".format(percent))
 
 def get_image_label_lst_segmentation(root_dir, img_dir, label_dir, out_path, sep = " ", img_exts = ".jpg.png.jpeg.bmp", label_exts = ".png"):
     """
