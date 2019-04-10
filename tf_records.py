@@ -72,7 +72,8 @@ def get_image_label_lst_classify(root_dir, cls_dict, out_path,
             percent = idx * 100 / num 
             print("{:3d}%\r".format(percent))
 
-def get_image_label_lst_segmentation(root_dir, img_dir, label_dir, out_path, sep = " ", img_exts = ".jpg.png.jpeg.bmp", label_exts = ".png"):
+def get_image_label_lst_segmentation(root_dir, img_dir, label_dir, out_path, 
+    sep = " ", img_exts = ".jpg.png.jpeg.bmp", label_exts = ".png"):
     """
     params:\n
         root_dir: the root directory of img_dir and label_dir.
@@ -201,7 +202,7 @@ def read_tfrecords_by_data(tfr_path, size, channel, transform = None,
         buffer_size: shuffle at how many image label pair once.
         seed: The random seed been used.
         reshuffle_each_iter: whether shuffle dataset at each iteration.
-    return: image and label pare tensor. (You should use sess.run() to get value(np.ndarray).)
+    return: image and label pair tensor. (You should use sess.run() to get value(np.ndarray).)
     """
     def map_func(tfr):
         if "classify" == label_type:
