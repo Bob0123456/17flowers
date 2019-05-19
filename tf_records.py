@@ -107,8 +107,10 @@ def create_tfrecords(tfr_path, img_label_lst, label_type = "classify", size = No
             assert 2 == len(line), "line content wrong, it should be [image_path, label_path]"
             image = cv.imread(line[0])
             if None != size:
-                image = cv.resize(image, size, interpolation = cv.INTER_LINEAR) 
-                image_raw = image.tobytes() 
+                # the definition of size in tensorflow and opencv is different.
+                h, w = size
+                image = cv.resize(image, (w, h), interpolation = cv.INTER_LINEAR) 
+            image_raw = image.tobytes() 
             if "classify" == label_type: 
                 label = int(line[1]) 
             elif("segmentation" == label_type): 
