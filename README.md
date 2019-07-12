@@ -1,6 +1,6 @@
 # 17flowers
 
-This repo is use 17flwers dataset to do classification for learning tensorflow, learning how to create TFRecords and how to train own data in tensorflow.
+This repo is to do classification for learning tensorflow by using 17flowers dataset, learning how to create TFRecords and how to train own data in tensorflow.
 
 ## Create TFRecords
 
